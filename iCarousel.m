@@ -1090,7 +1090,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         _numberOfVisibleItems = [(id<iCarouselDeprecated>)_dataSource numberOfVisibleItemsInCarousel:self];
     }
     
-    _numberOfVisibleItems = MAX(0, MIN(_numberOfVisibleItems, _numberOfItems + _numberOfPlaceholdersToShow));
+    _numberOfVisibleItems = fmax(0, fmin(_numberOfVisibleItems, _numberOfItems + _numberOfPlaceholdersToShow));
 
 }
 
@@ -1109,8 +1109,8 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
             //slightly arbitrary number, chosen for aesthetic reasons
             CGFloat spacing = [self valueForOption:iCarouselOptionSpacing withDefault:1.0f];
             CGFloat width = _vertical ? self.bounds.size.height: self.bounds.size.width;
-            count = MIN(MAX_VISIBLE_ITEMS, MAX(12, ceilf(width / (spacing * _itemWidth)) * M_PI));
-            count = MIN(_numberOfItems + _numberOfPlaceholdersToShow, count);
+            count = fmin(MAX_VISIBLE_ITEMS, fmax(12, ceilf(width / (spacing * _itemWidth)) * M_PI));
+            count = fmin(_numberOfItems + _numberOfPlaceholdersToShow, count);
             break;
         }
         default:
@@ -1337,7 +1337,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     NSInteger offset = self.currentItemIndex - _numberOfVisibleItems/2;
     if (!_wrapEnabled)
     {
-        offset = MAX(min, MIN(max - _numberOfVisibleItems + 1, offset));
+        offset = fmax(min, fmin(max - _numberOfVisibleItems + 1, offset));
     }
     for (NSInteger i = 0; i < _numberOfVisibleItems; i++)
     {
@@ -1437,7 +1437,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     }
     else
     {
-        return MIN(MAX(index, 0), _numberOfItems - 1);
+        return fmin(fmax(index, 0), _numberOfItems - 1);
     }
 }
 
